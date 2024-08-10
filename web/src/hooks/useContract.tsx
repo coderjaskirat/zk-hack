@@ -1,18 +1,24 @@
 import { ABI, CONTRACT_ADDRESS } from "@/constants/contract";
 import { useGameStore } from "@/states/game";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 
 export const useContractWrite = () => {
   const { writeContractAsync } = useWriteContract();
   const [hash, setHash] = useState<`0x${string}` | undefined>(undefined);
-  const { txMode } = useGameStore((state) => state);
+  const { txMode, setGameID } = useGameStore((state) => state);
 
   const { data } = useWaitForTransactionReceipt({ hash });
   console.log("data", data);
 
+  useEffect(() => {
+    if (data) {
+      const gameId = data.logs[0].data.toString();
+      setGameID(gameId);
+    }
+  }, [data, setGameID]);
+
   const createGame = async (maxPlayers: string, joinTime: number) => {
-    console.log("writeContract", writeContractAsync);
     const tx =
       txMode === "user"
         ? await writeContractAsync({
