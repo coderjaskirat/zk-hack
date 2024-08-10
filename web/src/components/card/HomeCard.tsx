@@ -46,7 +46,7 @@ export const HomeCard = () => {
   }, [createGame, maxPlayers, joinTime]);
 
   const handleJoinSubmit = useCallback(async () => {
-    await joinGame(gameID);
+    await joinGame(gameID, "1234");
     console.log("Joining Game ID:", gameID);
     setIsJoiningGame(false);
     setShowJoinModal(false);
