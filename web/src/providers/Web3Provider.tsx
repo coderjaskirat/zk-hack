@@ -12,6 +12,7 @@ const config = getDefaultConfig({
   chains: [nova],
   ssr: true,
 });
+console.log("config", config);
 const queryClient = new QueryClient();
 
 type Web3ProviderProps = {

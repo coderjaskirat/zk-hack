@@ -1,5 +1,6 @@
 "use client";
 
+import { useContractWrite } from "@/hooks/useContract";
 import { useGameStore } from "@/states/game";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useCallback, useState } from "react";
@@ -18,6 +19,7 @@ export const HomeCard = () => {
   const [joinTime, setJoinTime] = useState(2);
   const { gameID, setGameID } = useGameStore((state) => state);
   const { disconnect } = useDisconnect();
+  const { createGame, joinGame } = useContractWrite();
 
   const handleCreateGame = useCallback(() => {
     setIsCreatingGame(true);
@@ -36,17 +38,19 @@ export const HomeCard = () => {
     setShowJoinModal(false);
   }, []);
 
-  const handleCreateSubmit = useCallback(() => {
+  const handleCreateSubmit = useCallback(async () => {
+    await createGame(maxPlayers, joinTime);
     console.log("Game Created with settings:", { maxPlayers, joinTime });
     setIsCreatingGame(false);
     setShowCreateModal(false);
-  }, [maxPlayers, joinTime]);
+  }, [createGame, maxPlayers, joinTime]);
 
-  const handleJoinSubmit = useCallback(() => {
+  const handleJoinSubmit = useCallback(async () => {
+    await joinGame(gameID);
     console.log("Joining Game ID:", gameID);
     setIsJoiningGame(false);
     setShowJoinModal(false);
-  }, [gameID]);
+  }, [gameID, joinGame]);
 
   const handleDisconnect = useCallback(() => {
     console.log("Disconnecting Wallet");

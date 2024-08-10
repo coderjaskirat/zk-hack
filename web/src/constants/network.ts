@@ -10,10 +10,10 @@ export const nova: Chain = {
   },
   rpcUrls: {
     default: {
-      http: [process.env.NEXT_PUBLIC_RPC_ENDPOINT || ""],
+      http: ["https://nova-0.gemini-3h.subspace.network/ws"],
     },
     public: {
-      http: [process.env.NEXT_PUBLIC_RPC_ENDPOINT || ""],
+      http: ["https://nova-0.gemini-3h.subspace.network/ws"],
     },
   },
   blockExplorers: {
