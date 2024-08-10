@@ -6,17 +6,17 @@ import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 export const useContractWrite = () => {
   const { writeContractAsync } = useWriteContract();
   const [hash, setHash] = useState<`0x${string}` | undefined>(undefined);
-  const { txMode, setGameID } = useGameStore((state) => state);
+  const { txMode, setGameID, setGameCreation } = useGameStore((state) => state);
 
   const { data } = useWaitForTransactionReceipt({ hash });
-  console.log("data", data);
 
   useEffect(() => {
     if (data) {
       const gameId = data.logs[0].data.toString();
       setGameID(gameId);
+      setGameCreation(false);
     }
-  }, [data, setGameID]);
+  }, [data, setGameCreation, setGameID]);
 
   const createGame = async (maxPlayers: string, joinTime: number) => {
     const tx =
@@ -35,6 +35,7 @@ export const useContractWrite = () => {
             .then((res) => res.hash);
     console.log("tx", tx);
     setHash(tx);
+    setGameCreation(true);
 
     return tx;
   };

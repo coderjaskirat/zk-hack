@@ -4,13 +4,15 @@ import { useCanvas } from "@/hooks/useCanvas";
 import { useContractWrite } from "@/hooks/useContract";
 import { useGameStore } from "@/states/game";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useCallback, useState } from "react";
+import { useParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import { Loading } from "../icons/loading";
 import { CreateGameModal } from "../modals/CreateGameModal";
 import { JoinGameModal } from "../modals/JoinGameModal";
 
 export const HomeCard = () => {
+  const { gameId } = useParams<{ gameId: string }>();
   const { isConnected } = useAccount();
   const [isCreatingGame, setIsCreatingGame] = useState(false);
   const [isJoiningGame, setIsJoiningGame] = useState(false);
@@ -18,12 +20,16 @@ export const HomeCard = () => {
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [maxPlayers, setMaxPlayers] = useState("");
   const [joinTime, setJoinTime] = useState(2);
-  const { gameID, setGameID } = useGameStore((state) => state);
+  const { gameID, isGameInCreation, setGameID } = useGameStore(
+    (state) => state
+  );
   const { disconnect } = useDisconnect();
   const { createGame, joinGame } = useContractWrite();
   const [pixelData, setPixelData] = useState<string>("");
 
-  console.log("gameID", gameID);
+  useEffect(() => {
+    setGameID(gameId);
+  }, [gameId, setGameID]);
 
   const handleCreateGame = useCallback(() => {
     setIsCreatingGame(true);
@@ -146,6 +152,13 @@ export const HomeCard = () => {
         Pick, draw, guess, and have fun in groups of any size!
       </p>
 
+      {isGameInCreation && (
+        <div className="flex items-center justify-center gap-4 mt-8">
+          <Loading />
+          <p className="text-lg text-gray-600">Creating game, please wait...</p>
+        </div>
+      )}
+
       {gameID ? (
         <div className="flex flex-col items-center justify-center gap-4 mt-8">
           <p className="my-4 text-lg text-gray-600">Time to draw!</p>
@@ -185,47 +198,51 @@ export const HomeCard = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center gap-4 mt-8">
-          {isConnected ? (
+          {!isGameInCreation && (
             <>
-              <button
-                onClick={handleCreateGame}
-                disabled={isCreatingGame || isJoiningGame}
-                className={`w-48 rounded-lg ${
-                  isCreatingGame || isJoiningGame
-                    ? "bg-gray-400"
-                    : "bg-brand-400 hover:bg-brand-darker"
-                } py-3 px-6 text-xl font-semibold text-white`}
-              >
-                {isCreatingGame ? <Loading /> : "Create Game"}
-              </button>
-              <button
-                onClick={handleJoinGame}
-                disabled={isCreatingGame || isJoiningGame}
-                className={`w-48 rounded-lg ${
-                  isCreatingGame || isJoiningGame
-                    ? "bg-gray-300"
-                    : "bg-brand-300 hover:bg-brand-500"
-                } py-3 px-6 text-xl font-semibold text-white`}
-              >
-                {isJoiningGame ? <Loading /> : "Join Game"}
-              </button>
-              <button
-                onClick={handleDisconnect}
-                className="w-48 rounded-lg bg-red-500 hover:bg-red-700 py-3 px-6 text-xl font-semibold text-white"
-              >
-                Disconnect
-              </button>
-              {isCreatingGame || isJoiningGame ? (
-                <button
-                  onClick={handleCancel}
-                  className="w-48 rounded-lg bg-red-500 hover:bg-red-700 py-3 px-6 text-xl font-semibold text-white"
-                >
-                  Cancel
-                </button>
-              ) : null}
+              {isConnected ? (
+                <>
+                  <button
+                    onClick={handleCreateGame}
+                    disabled={isCreatingGame || isJoiningGame}
+                    className={`w-48 rounded-lg ${
+                      isCreatingGame || isJoiningGame
+                        ? "bg-gray-400"
+                        : "bg-brand-400 hover:bg-brand-darker"
+                    } py-3 px-6 text-xl font-semibold text-white`}
+                  >
+                    {isCreatingGame ? <Loading /> : "Create Game"}
+                  </button>
+                  <button
+                    onClick={handleJoinGame}
+                    disabled={isCreatingGame || isJoiningGame}
+                    className={`w-48 rounded-lg ${
+                      isCreatingGame || isJoiningGame
+                        ? "bg-gray-300"
+                        : "bg-brand-300 hover:bg-brand-500"
+                    } py-3 px-6 text-xl font-semibold text-white`}
+                  >
+                    {isJoiningGame ? <Loading /> : "Join Game"}
+                  </button>
+                  <button
+                    onClick={handleDisconnect}
+                    className="w-48 rounded-lg bg-red-500 hover:bg-red-700 py-3 px-6 text-xl font-semibold text-white"
+                  >
+                    Disconnect
+                  </button>
+                  {isCreatingGame || isJoiningGame ? (
+                    <button
+                      onClick={handleCancel}
+                      className="w-48 rounded-lg bg-red-500 hover:bg-red-700 py-3 px-6 text-xl font-semibold text-white"
+                    >
+                      Cancel
+                    </button>
+                  ) : null}
+                </>
+              ) : (
+                <ConnectButton />
+              )}
             </>
-          ) : (
-            <ConnectButton />
           )}
         </div>
       )}

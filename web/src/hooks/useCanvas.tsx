@@ -35,10 +35,13 @@ export function useCanvas(
       init && init(canvas);
       // restore state
       if (DEV_MODE && saveState && data.current) {
-        canvas.loadFromJSON(data.current);
+        canvas.loadFromJSON(data.current, () => {
+          console.log("Canvas has been loaded from JSON");
+          canvas.renderAll();
+        });
       }
     },
-    [saveState, ...deps]
+    [init, saveState]
   );
   useEffect(() => {
     // disposer
