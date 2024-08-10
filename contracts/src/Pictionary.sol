@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 contract Pictionary {
     address public owner;
+    address public be;
     uint256 public lastGameId;
     uint256 public categoryCount;
 
@@ -20,7 +21,12 @@ contract Pictionary {
     event GameCreated(uint256 gameId);
 
     modifier isOwner() {
-        require(msg.sender == owner, "Caller is not the owner");
+        require(msg.sender == be, "Caller is not the be");
+        _;
+    }
+
+    modifier isBE() {
+        require(msg.sender == owner, "Caller is not the BE");
         _;
     }
 
@@ -57,6 +63,12 @@ contract Pictionary {
         targets[gameId] = uint256(keccak256(abi.encodePacked(randomNumber, block.timestamp, block.prevrandao))) % categoryCount;
     }
 
+    function joinGameFor(address participants, uint256 gameId, uint256 randomNumber) public isBE {
+        require(games[gameId].playerCount > players[gameId].length, "Game is full");
+        players[gameId].push(participants);
+        targets[gameId] = uint256(keccak256(abi.encodePacked(randomNumber, block.timestamp, block.prevrandao))) % categoryCount;
+    }
+
     function getGameStartTime(uint256 gameId) public view returns (uint16) {
         return games[gameId].startTime;
     }
@@ -87,5 +99,9 @@ contract Pictionary {
             categories[i] = _categories[i];
         }
         categoryCount = i;
+    }
+
+    function setBE(address _be) public isOwner {
+        be = _be;
     }
 }
