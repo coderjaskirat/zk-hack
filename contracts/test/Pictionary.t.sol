@@ -18,10 +18,10 @@ contract PictionaryTest is Test {
         assertEq(game.getGameMaxPlayerCount(1), 2);
     }
 
-    function testFuzz_joinGame() public {
+    function testFuzz_joinGame(uint256 randomNum) public {
         uint16 startTime = uint16(block.timestamp + 2000);
         game.createGame(startTime, 2);
-        game.joinGame(1);
+        game.joinGame(1, randomNum);
         assertEq(game.getGameCurrentPlayerCount(1), 1);
     }
 }
