@@ -1,6 +1,28 @@
-export const CONTRACT_ADDRESS = "0x55B9197aD2606B2A02d6f8d661Ebcf84ac91C347";
+export const CONTRACT_ADDRESS = "0x493d58438EC204A40453811A2c575F93148Cb69C";
 
 export const ABI = [
+  { type: "constructor", inputs: [], stateMutability: "nonpayable" },
+  {
+    type: "function",
+    name: "be",
+    inputs: [],
+    outputs: [{ name: "", type: "address", internalType: "address" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "categories",
+    inputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    outputs: [{ name: "", type: "string", internalType: "string" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "categoryCount",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
   {
     type: "function",
     name: "createGame",
@@ -20,6 +42,13 @@ export const ABI = [
       { name: "creator", type: "address", internalType: "address" },
       { name: "playerCount", type: "uint256", internalType: "uint256" },
     ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getCategorie",
+    inputs: [{ name: "index", type: "uint256", internalType: "uint256" }],
+    outputs: [{ name: "", type: "string", internalType: "string" }],
     stateMutability: "view",
   },
   {
@@ -45,8 +74,36 @@ export const ABI = [
   },
   {
     type: "function",
-    name: "joinGame",
+    name: "getGameTarget",
     inputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getGameTargetCategorie",
+    inputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+    outputs: [{ name: "", type: "string", internalType: "string" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "joinGame",
+    inputs: [
+      { name: "gameId", type: "uint256", internalType: "uint256" },
+      { name: "randomNumber", type: "uint256", internalType: "uint256" },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "joinGameFor",
+    inputs: [
+      { name: "participants", type: "address", internalType: "address" },
+      { name: "gameId", type: "uint256", internalType: "uint256" },
+      { name: "randomNumber", type: "uint256", internalType: "uint256" },
+    ],
     outputs: [],
     stateMutability: "nonpayable",
   },
@@ -59,12 +116,42 @@ export const ABI = [
   },
   {
     type: "function",
+    name: "owner",
+    inputs: [],
+    outputs: [{ name: "", type: "address", internalType: "address" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "players",
     inputs: [
       { name: "", type: "uint256", internalType: "uint256" },
       { name: "", type: "uint256", internalType: "uint256" },
     ],
     outputs: [{ name: "", type: "address", internalType: "address" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "setBE",
+    inputs: [{ name: "_be", type: "address", internalType: "address" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "setCategories",
+    inputs: [
+      { name: "_categories", type: "string[]", internalType: "string[]" },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "targets",
+    inputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
     stateMutability: "view",
   },
   {

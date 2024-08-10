@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 interface GameState {
+  txMode: "user" | "be";
   gameID: string;
   userID: string;
 }
@@ -11,6 +12,7 @@ interface GameActions {
 }
 
 const initialGameState: GameState = {
+  txMode: "be",
   gameID: "",
   userID: "",
 };
