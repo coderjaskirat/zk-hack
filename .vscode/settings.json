@@ -11,5 +11,5 @@
   "editor.tabSize": 2,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true,
   "editor.formatOnSave": true,
-  "cSpell.words": ["hackathon", "pictionary", "zk-hack"]
+  "cSpell.words": ["hackathon", "pictionary", "zk-hack", "wagmi"]
 }
