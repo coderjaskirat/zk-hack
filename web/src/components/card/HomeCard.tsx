@@ -17,7 +17,7 @@ export const HomeCard = () => {
 
   const handleCreateGame = useCallback(() => {
     setIsCreatingGame(true);
-    setShowJoinModal(true);
+    setShowCreateModal(true);
   }, []);
 
   const handleJoinGame = useCallback(() => {
