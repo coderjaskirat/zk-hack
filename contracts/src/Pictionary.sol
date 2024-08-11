@@ -69,6 +69,21 @@ contract Pictionary {
         targets[gameId] = uint256(keccak256(abi.encodePacked(randomNumber, block.timestamp, block.prevrandao))) % categoryCount;
     }
 
+    function verify(uint256[] memory proofs) public pure returns (uint256 result) {
+        require(proofs.length > 0, "Array must not be empty");
+
+        uint256 maxHex = proofs[0];
+
+        for (uint256 i = 1; i < proofs.length; i++) {
+            if (proofs[i] > maxHex) {
+                maxHex = proofs[i];
+                result = i;
+            }
+        }
+
+        return result;
+    }
+
     function getGameStartTime(uint256 gameId) public view returns (uint16) {
         return games[gameId].startTime;
     }

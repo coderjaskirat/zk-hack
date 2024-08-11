@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS = "0x493d58438EC204A40453811A2c575F93148Cb69C";
+export const CONTRACT_ADDRESS = "0x9CeA06b9D2fcE57a32f6f509e9246ac957C2Cd8F";
 
 export const ABI = [
   { type: "constructor", inputs: [], stateMutability: "nonpayable" },
@@ -153,6 +153,13 @@ export const ABI = [
     inputs: [{ name: "", type: "uint256", internalType: "uint256" }],
     outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
     stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "verify",
+    inputs: [{ name: "proofs", type: "uint256[]", internalType: "uint256[]" }],
+    outputs: [{ name: "result", type: "uint256", internalType: "uint256" }],
+    stateMutability: "pure",
   },
   {
     type: "event",
