@@ -24,4 +24,24 @@ contract PictionaryTest is Test {
         game.joinGame(1, randomNum);
         assertEq(game.getGameCurrentPlayerCount(1), 1);
     }
+
+    function test_verify() public {
+        uint256[] memory randomNums = new uint256[](5);
+        for (uint256 i = 0; i < 5; i++) {
+            randomNums[i] = 1 + i;
+        }
+        console.log(game.verify(randomNums));
+        assertEq(game.verify(randomNums), 4);
+    }
+
+    function test_verify2() public {
+        uint256[] memory randomNums = new uint256[](6);
+        for (uint256 i = 0; i < 5; i++) {
+            randomNums[i] = 1 + i;
+        }
+        randomNums[5] = 1;
+
+        console.log(game.verify(randomNums));
+        assertEq(game.verify(randomNums), 4);
+    }
 }
